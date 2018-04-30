@@ -5,6 +5,9 @@ services:
     environment:
       - CONFIG_PROP=config.properties
     image: conductor:server
+    volumes:
+      # override some config settings
+      - config.properties.local:/app/config/config.properties
     build:
       context: ../
       dockerfile: docker/server/Dockerfile
@@ -22,12 +25,20 @@ services:
       context: ../
       dockerfile: docker/ui/Dockerfile
     ports:
-      - 5000:5000
+      - 5001:5000
     links:
       - conductor-server
 
   dynomite:
     image: v1r3n/dynomite
+    logging:
+      # limit logs to 200mb -- rougly 2 days!
+      driver: "json-file"
+      options:
+        max-size: "50m"
+	max-file: "4"
 
   elasticsearch:
     image: elasticsearch:2.4
+    ports:
+      - 9200:9200
