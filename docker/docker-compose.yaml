@@ -1,5 +1,8 @@
 # Docker compose for netflix conductor + elasticsearch + dynomite
 version: '2'
+
+# Use docker-compose -p conductor when bringing these containers up
+
 services:
   conductor-server:
     environment:
@@ -7,7 +10,7 @@ services:
     image: conductor:server
     volumes:
       # override some config settings
-      - config.properties.local:/app/config/config.properties
+      - ./config.properties.local:/app/config/config.properties
     build:
       context: ../
       dockerfile: docker/server/Dockerfile
@@ -32,11 +35,11 @@ services:
   dynomite:
     image: v1r3n/dynomite
     logging:
-      # limit logs to 200mb -- rougly 2 days!
+      # limit logs to 200mb -- roughly 2 days!
       driver: "json-file"
       options:
         max-size: "50m"
-	max-file: "4"
+        max-file: "4"
 
   elasticsearch:
     image: elasticsearch:2.4
