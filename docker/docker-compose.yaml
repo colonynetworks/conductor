@@ -10,7 +10,7 @@ services:
     image: conductor:server
     volumes:
       # override some config settings
-      - ./config.properties.local:/app/config/config.properties
+      - "./config.properties.local:/app/config/config.properties:ro"
     build:
       context: ../
       dockerfile: docker/server/Dockerfile
